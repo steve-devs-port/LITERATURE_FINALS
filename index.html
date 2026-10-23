@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Behind the Headlines</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header id="top">
+  <h1>Behind the Headlines</h1>
+  <nav id="nav" aria-label="Workspace">
+    <button data-act="go" data-to="newspaper">Newspaper</button>
+    <button data-act="go" data-to="archive">Archive</button>
+    <button data-act="go" data-to="lit">The Bartolome File</button>
+    <button data-act="go" data-to="threads">Threads</button>
+    <button data-act="go" data-to="compare">Compare</button>
+    <button data-act="go" data-to="board">Board</button>
+    <button data-act="go" data-to="notebook">Notebook</button>
+    <button data-act="go" data-to="report">Report</button>
+    <button data-act="go" data-to="menu">Menu</button>
+  </nav>
+  <div id="meter" aria-live="polite"></div>
+</header>
+
+<main id="stage">
+<svg id="desk" viewBox="0 0 1000 680" preserveAspectRatio="xMidYMid meet" role="group" aria-label="The journalist's desk. Click objects to interact.">
+  <defs>
+    <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#76533a"/><stop offset=".5" stop-color="#63442f"/><stop offset="1" stop-color="#4b3223"/></linearGradient>
+    <linearGradient id="apron" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3120"/><stop offset="1" stop-color="#2a1b11"/></linearGradient>
+    <linearGradient id="lip" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a47a56"/><stop offset=".5" stop-color="#7d5b3f"/><stop offset="1" stop-color="#4d3523"/></linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#40352c"/><stop offset="1" stop-color="#2a221c"/></linearGradient>
+    <linearGradient id="brass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e4c987"/><stop offset=".5" stop-color="#b8924d"/><stop offset="1" stop-color="#7d5f2c"/></linearGradient>
+    <linearGradient id="drawerFaceG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a4a33"/><stop offset=".12" stop-color="#583b28"/><stop offset="1" stop-color="#3d2819"/></linearGradient>
+    <linearGradient id="barrel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3c5486"/><stop offset=".5" stop-color="#23324f"/><stop offset="1" stop-color="#141d30"/></linearGradient>
+    <linearGradient id="leather" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6e4a37"/><stop offset="1" stop-color="#47301f"/></linearGradient>
+    <linearGradient id="cover" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5b211d"/><stop offset=".12" stop-color="#8a3a33"/><stop offset="1" stop-color="#6e2a25"/></linearGradient>
+    <linearGradient id="radioBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6140"/><stop offset="1" stop-color="#523622"/></linearGradient>
+    <linearGradient id="glassG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d6e6e6" stop-opacity=".6"/><stop offset=".3" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#9fbfc2" stop-opacity=".3"/></linearGradient>
+    <linearGradient id="shade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f5444"/><stop offset=".5" stop-color="#4a7a64"/><stop offset="1" stop-color="#2a4a3b"/></linearGradient>
+    <radialGradient id="plateG" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#f3eee1"/><stop offset=".75" stop-color="#ddd5c0"/><stop offset="1" stop-color="#b7ad94"/></radialGradient>
+    <radialGradient id="riceG" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#fffdf6"/><stop offset=".7" stop-color="#efe8d4"/><stop offset="1" stop-color="#cfc6ac"/></radialGradient>
+    <radialGradient id="meatG" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#a5602f"/><stop offset=".6" stop-color="#6e3a1c"/><stop offset="1" stop-color="#3d1e0e"/></radialGradient>
+    <radialGradient id="coffeeG" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#4b2c18"/><stop offset="1" stop-color="#2a170b"/></radialGradient>
+    <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffe2a0" stop-opacity=".6"/><stop offset=".5" stop-color="#ffd58a" stop-opacity=".2"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient>
+    <radialGradient id="vig" cx=".5" cy=".5" r=".75"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient>
+    <pattern id="wallp" width="26" height="26" patternUnits="userSpaceOnUse"><rect width="26" height="26" fill="none"/><path d="M13 0 V26" stroke="#fff" stroke-opacity=".03"/><circle cx="13" cy="13" r="1.4" fill="#fff" fill-opacity=".03"/></pattern>
+    <pattern id="weave" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 0 L4 4 M4 0 L0 4" stroke="#2a1d12" stroke-opacity=".5" stroke-width=".7"/></pattern>
+    <pattern id="corkTex" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="3" cy="4" r="1.2" fill="#6e4f2e" fill-opacity=".5"/><circle cx="9" cy="9" r="1.6" fill="#c59a64" fill-opacity=".5"/><circle cx="8" cy="2" r=".9" fill="#5a3f24" fill-opacity=".4"/></pattern>
+    <pattern id="grains" width="14" height="10" patternUnits="userSpaceOnUse"><ellipse cx="3" cy="3" rx="2.2" ry="1" fill="#fff" fill-opacity=".7" transform="rotate(25 3 3)"/><ellipse cx="10" cy="6" rx="2.2" ry="1" fill="#e4dcc2" fill-opacity=".8" transform="rotate(-30 10 6)"/><ellipse cx="6" cy="8" rx="2" ry=".9" fill="#fff" fill-opacity=".6"/></pattern>
+    <filter id="sh" x="-20%" y="-20%" width="145%" height="155%"><feDropShadow dx="3" dy="5" stdDeviation="3.2" flood-color="#000" flood-opacity=".5"/></filter>
+    <filter id="sh2" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="1" dy="2" stdDeviation="1.3" flood-color="#000" flood-opacity=".45"/></filter>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="4"/><feColorMatrix values="0 0 0 0 .2  0 0 0 0 .15  0 0 0 0 .1  0 0 0 .2 0"/></filter>
+    <filter id="woodgrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".005 .2" numOctaves="4" seed="7"/><feColorMatrix values="0 0 0 0 .1  0 0 0 0 .05  0 0 0 0 .02  0 0 0 1.5 -.5"/></filter>
+    <filter id="paper" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".05 .8" numOctaves="3" seed="2" result="n"/><feColorMatrix in="n" values="0 0 0 0 .38  0 0 0 0 .3  0 0 0 0 .18  0 0 0 .3 0" result="t"/><feComposite in="t" in2="SourceGraphic" operator="in" result="tc"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="tc"/></feMerge></filter>
+    <filter id="blur2"><feGaussianBlur stdDeviation="2"/></filter>
+  </defs>
+
+  <!-- wall -->
+  <rect x="-600" width="2200" height="150" fill="url(#wall)"/>
+  <rect x="-600" width="2200" height="150" fill="url(#wallp)"/>
+  <rect x="-600" y="128" width="2200" height="16" fill="#1d1712" opacity=".55"/>
+  <!-- desk top -->
+  <rect x="-600" y="140" width="2200" height="466" fill="url(#wood)"/>
+  <rect x="-600" y="140" width="2200" height="466" filter="url(#woodgrain)" opacity=".5" style="mix-blend-mode:multiply"/>
+  <g stroke="#1e130b" stroke-opacity=".4"><line x1="-600" y1="262" x2="1600" y2="262"/><line x1="-600" y1="384" x2="1600" y2="384"/><line x1="-600" y1="506" x2="1600" y2="506"/></g>
+  <g stroke="#e6c08c" stroke-opacity=".08"><line x1="-600" y1="264" x2="1600" y2="264"/><line x1="-600" y1="386" x2="1600" y2="386"/><line x1="-600" y1="508" x2="1600" y2="508"/></g>
+  <g fill="none" stroke="#1b110a" stroke-opacity=".22" stroke-width="1.4"><ellipse cx="445" cy="238" rx="27" ry="9"/><ellipse cx="452" cy="240" rx="25" ry="8" stroke-opacity=".12"/><path d="M360 470 q40 10 80 -4" /><path d="M118 450 q30 -6 56 6"/></g>
+  <g stroke="#f0d3a4" stroke-opacity=".09" stroke-width="1"><path d="M730 300 l70 14"/><path d="M130 296 l50 -10"/><path d="M880 520 l60 8"/></g>
+  <!-- front lip and apron with drawer -->
+  <rect x="-600" y="596" width="2200" height="12" fill="url(#lip)"/>
+  <rect x="-600" y="608" width="2200" height="80" fill="url(#apron)"/>
+  <rect x="-600" y="608" width="2200" height="80" filter="url(#woodgrain)" opacity=".55" style="mix-blend-mode:multiply"/>
+  <rect x="-600" y="608" width="2200" height="5" fill="#000" opacity=".4"/>
+  <image id="deskBgImg" href="" x="0" y="0" width="1000" height="680" preserveAspectRatio="xMidYMid slice" style="display:none"/>
+
+  <!-- wall: sticky notes -->
+  <g class="decor" filter="url(#sh2)"><rect x="170" y="26" width="46" height="46" fill="#ecd98a" transform="rotate(-5 193 49)"/><path d="M178 42 h26 M178 50 h22 M178 58 h28" stroke="#6a5a2a" stroke-width="2" stroke-opacity=".6" transform="rotate(-5 193 49)"/><rect x="226" y="40" width="40" height="40" fill="#e6b9a8" transform="rotate(4 246 60)"/><path d="M233 54 h24 M233 62 h18" stroke="#6a3a2a" stroke-width="2" stroke-opacity=".55" transform="rotate(4 246 60)"/></g>
+
+  <!-- calendar -->
+  <g class="obj" data-obj="calendar" tabindex="0" role="button" aria-label="Calendar"><g class="art" filter="url(#sh)">
+    <path d="M40 14 H150 V134 L142 140 H40 Z" fill="#e8dcc0" filter="url(#paper)"/><path d="M142 140 L150 134 V140 Z" fill="#b9a97f"/>
+    <rect x="40" y="14" width="110" height="26" fill="#8c3b32"/><rect x="40" y="38" width="110" height="3" fill="#000" opacity=".2"/>
+    <text x="95" y="33" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#f2e6cc">SEPT 1972</text>
+    <g stroke="#5b4a3a" stroke-width="5" stroke-dasharray="1 12" stroke-linecap="round"><line x1="52" y1="62" x2="140" y2="62"/><line x1="52" y1="80" x2="140" y2="80"/><line x1="52" y1="98" x2="140" y2="98"/><line x1="52" y1="116" x2="140" y2="116"/></g>
+    <path d="M108 92 l14 12 M122 92 l-14 12" stroke="#8c3b32" stroke-width="2" stroke-opacity=".8"/><circle cx="116" cy="98" r="9" fill="none" stroke="#8c3b32" stroke-width="2"/>
+    <circle cx="95" cy="20" r="2.5" fill="#222"/>
+  </g></g>
+
+  <!-- investigation board -->
+  <g class="obj" data-obj="board" tabindex="0" role="button" aria-label="Investigation board"><g class="art" filter="url(#sh)">
+    <rect x="316" y="8" width="338" height="132" rx="3" fill="#4a3020"/><rect x="316" y="8" width="338" height="5" fill="#8a6446" opacity=".7"/>
+    <rect x="327" y="18" width="316" height="112" fill="#a67d52"/><rect x="327" y="18" width="316" height="112" fill="url(#corkTex)"/><rect x="327" y="18" width="316" height="112" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="3"/>
+    <g filter="url(#sh2)"><rect x="342" y="30" width="62" height="48" fill="#e9dcc0" transform="rotate(-4 373 54)"/><rect x="430" y="26" width="70" height="36" fill="#d9c8a0" transform="rotate(3 465 44)"/><rect x="520" y="34" width="56" height="60" fill="#efe4c8" transform="rotate(-2 548 64)"/><rect x="402" y="82" width="64" height="38" fill="#f0e2a5" transform="rotate(5 434 100)"/><rect x="584" y="76" width="46" height="46" fill="#e4d6b4" transform="rotate(-6 607 99)"/></g>
+    <g stroke="#6a5a4a" stroke-width="2" stroke-dasharray="6 3" opacity=".7"><line x1="350" y1="46" x2="394" y2="46" transform="rotate(-4 373 54)"/><line x1="350" y1="56" x2="390" y2="56" transform="rotate(-4 373 54)"/><line x1="528" y1="50" x2="568" y2="50"/><line x1="528" y1="60" x2="566" y2="60"/></g>
+    <path d="M373 36 Q420 52 465 42 Q510 44 548 40 Q490 74 434 88 Q520 86 607 84" fill="none" stroke="#8c3b32" stroke-width="1.5"/>
+    <g fill="#8c3b32"><circle cx="373" cy="36" r="3.5"/><circle cx="465" cy="42" r="3.5"/><circle cx="548" cy="40" r="3.5"/><circle cx="434" cy="88" r="3.5"/><circle cx="607" cy="84" r="3.5"/></g>
+  </g></g>
+
+  <!-- lamp -->
+  <ellipse id="lampGlow" cx="880" cy="250" rx="190" ry="120" fill="url(#glow)" pointer-events="none"/>
+  <g class="obj" data-obj="lamp" tabindex="0" role="button" aria-label="Desk lamp"><g class="art" filter="url(#sh)">
+    <rect x="826" y="96" width="142" height="206" fill="transparent"/>
+    <ellipse cx="880" cy="294" rx="48" ry="11" fill="#242220"/><ellipse cx="880" cy="291" rx="40" ry="8" fill="#37332e"/>
+    <path d="M880 288 L850 205 L905 135" fill="none" stroke="#2b2824" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M880 288 L850 205 L905 135" fill="none" stroke="#6a645a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(-1.5,-1.5)"/>
+    <circle cx="850" cy="205" r="6" fill="url(#brass)"/>
+    <path d="M846 112 L938 98 L964 158 L834 170 Z" fill="url(#shade)"/><path d="M846 112 L938 98 L944 112 L850 126 Z" fill="#fff" opacity=".1"/><ellipse cx="899" cy="164" rx="64" ry="6" fill="#ffe2a0" opacity=".85"/>
+  </g></g>
+
+  <!-- folders pile -->
+  <g class="obj" data-obj="folders" tabindex="0" role="button" aria-label="Manila folders: investigation threads"><g class="art" filter="url(#sh)">
+    <g transform="rotate(-6 116 235)"><rect x="24" y="168" width="184" height="124" fill="#b99a5c"/><path d="M30 168 h50 l8 -10 h-58z" fill="#b99a5c"/></g>
+    <g transform="rotate(2 120 232)"><rect x="30" y="172" width="184" height="124" fill="#caa968"/><rect x="40" y="176" width="150" height="110" fill="#efe6cf" opacity=".9" transform="rotate(-1 115 231)"/></g>
+    <g transform="rotate(-2 120 238)"><rect x="34" y="178" width="184" height="124" fill="#d3b377" filter="url(#paper)"/><path d="M40 178 h54 l9 -11 h-63z" fill="#d3b377"/><path d="M34 178 H218" stroke="#000" stroke-opacity=".12"/></g>
+    <g transform="rotate(5 124 240)"><rect x="40" y="184" width="176" height="116" fill="#dcc084" filter="url(#paper)"/><path d="M148 184 h50 l8 -11 h-58z" fill="#dcc084"/>
+      <rect x="62" y="214" width="112" height="22" fill="#f1e6c8" opacity=".9"/><text x="118" y="230" text-anchor="middle" font-family="Courier New,monospace" font-size="12" fill="#4a3a22">THREADS A–E</text>
+      <rect x="140" y="252" width="62" height="14" fill="#8c3b32" opacity=".75" transform="rotate(-4 170 259)"/><circle cx="64" cy="270" r="14" fill="none" stroke="#5a3a1e" stroke-opacity=".25" stroke-width="2"/></g>
+    <path d="M70 300 l30 -2 l-4 -8" fill="none" stroke="#a8a8a2" stroke-width="2"/>
+  </g></g>
+
+  <!-- glass -->
+  <g class="obj" data-obj="water" tabindex="0" role="button" aria-label="Glass of water"><g class="art" filter="url(#sh)">
+    <path d="M232 204 L282 204 L276 268 L238 268 Z" fill="url(#glassG)" stroke="#e7f0ee" stroke-opacity=".6"/><path d="M235 230 L279 230 L276 268 L238 268 Z" fill="#9fc3c6" fill-opacity=".55"/>
+    <ellipse cx="257" cy="204" rx="25" ry="4.5" fill="#e7f0ee" fill-opacity=".5"/><ellipse cx="257" cy="230" rx="22" ry="3" fill="#cfe6e6" fill-opacity=".7"/><path d="M244 212 L246 260" stroke="#fff" stroke-opacity=".5" stroke-width="2"/>
+  </g></g>
+
+  <!-- photos -->
+  <g class="obj" data-obj="photoStreet" tabindex="0" role="button" aria-label="Photograph: street scene"><g class="art" filter="url(#sh)" transform="rotate(-6 330 235)">
+    <rect x="296" y="190" width="74" height="62" fill="#efe6cf" filter="url(#paper)"/><rect x="302" y="196" width="62" height="42" fill="#8b8068"/>
+    <g fill="#4a4338"><rect x="307" y="212" width="10" height="26"/><rect x="321" y="204" width="12" height="34"/><rect x="337" y="216" width="9" height="22"/><rect x="349" y="208" width="10" height="30"/></g><rect x="302" y="196" width="62" height="42" fill="#000" opacity=".12"/>
+  </g></g>
+  <g class="obj" data-obj="photoFamily" tabindex="0" role="button" aria-label="Photograph: family portrait"><g class="art" filter="url(#sh)" transform="rotate(5 405 240)">
+    <rect x="372" y="198" width="70" height="58" fill="#efe6cf" filter="url(#paper)"/><rect x="378" y="204" width="58" height="38" fill="#7c725d"/>
+    <g fill="#3f382d"><circle cx="392" cy="220" r="5"/><circle cx="406" cy="217" r="5"/><circle cx="420" cy="220" r="5"/><rect x="387" y="226" width="12" height="16"/><rect x="401" y="223" width="12" height="19"/><rect x="415" y="226" width="12" height="16"/></g><rect x="378" y="204" width="58" height="38" fill="#000" opacity=".1"/>
+    <path d="M436 256 l6 -6 v6z" fill="#c9bd9b"/>
+  </g></g>
+
+  <!-- mug -->
+  <g class="obj" data-obj="mug" tabindex="0" role="button" aria-label="Coffee mug"><g class="art" filter="url(#sh)">
+    <path d="M520 222 q26 -6 36 0 v-4" fill="none"/><ellipse cx="500" cy="236" rx="27" ry="10" fill="#1d1710" opacity=".35"/>
+    <path d="M474 196 h52 v36 q0 14 -26 14 q-26 0 -26 -14z" fill="#d9d0bb"/><path d="M474 196 h14 v50 q-14 -2 -14 -14z" fill="#fff" opacity=".35"/><path d="M514 196 h12 v36 q0 10 -12 13z" fill="#000" opacity=".15"/>
+    <path d="M526 204 q20 -2 18 14 q-2 14 -18 12" fill="none" stroke="#d9d0bb" stroke-width="6"/>
+    <ellipse cx="500" cy="196" rx="26" ry="8" fill="#cfc6af"/><ellipse cx="500" cy="197" rx="22" ry="6" fill="url(#coffeeG)"/><ellipse cx="494" cy="195.5" rx="8" ry="2" fill="#fff" opacity=".2"/>
+    <text x="500" y="226" text-anchor="middle" font-family="Georgia,serif" font-size="8" fill="#8c3b32" opacity=".8">Top #1</text>
+  </g></g>
+
+  <!-- radio -->
+  <g class="obj" data-obj="radio" tabindex="0" role="button" aria-label="Vintage radio"><g class="art" filter="url(#sh)">
+    <rect x="574" y="176" width="170" height="116" rx="16" fill="url(#radioBody)"/><rect x="574" y="176" width="170" height="8" rx="4" fill="#fff" opacity=".12"/>
+    <rect x="583" y="185" width="152" height="98" rx="11" fill="#cdb98f"/><rect x="583" y="185" width="152" height="98" rx="11" fill="none" stroke="#6e5a3a" stroke-opacity=".6"/>
+    <rect x="592" y="196" width="64" height="76" rx="6" fill="#4d3a27"/><rect x="592" y="196" width="64" height="76" rx="6" fill="url(#weave)"/>
+    <g stroke="#a58a5e" stroke-width="2.4" opacity=".9"><line x1="598" y1="208" x2="650" y2="208"/><line x1="598" y1="220" x2="650" y2="220"/><line x1="598" y1="232" x2="650" y2="232"/><line x1="598" y1="244" x2="650" y2="244"/><line x1="598" y1="256" x2="650" y2="256"/></g>
+    <rect x="666" y="196" width="60" height="28" rx="3" fill="#ecdfba"/><rect x="666" y="196" width="60" height="28" rx="3" fill="none" stroke="#6b5a40"/><g stroke="#6b5a40"><line x1="674" y1="203" x2="674" y2="217"/><line x1="686" y1="206" x2="686" y2="217"/><line x1="698" y1="203" x2="698" y2="217"/><line x1="710" y1="206" x2="710" y2="217"/></g><line x1="692" y1="198" x2="692" y2="222" stroke="#8c3b32" stroke-width="1.5"/>
+    <circle cx="680" cy="252" r="13" fill="#2a1d14"/><circle cx="680" cy="252" r="10" fill="#3d2c1e"/><path d="M674 246 a9 9 0 0 1 10 -2" stroke="#fff" stroke-opacity=".3" fill="none"/><line x1="680" y1="252" x2="680" y2="244" stroke="#c9b48a" stroke-width="2"/>
+    <circle cx="712" cy="252" r="13" fill="#2a1d14"/><circle cx="712" cy="252" r="10" fill="#3d2c1e"/><line x1="712" y1="252" x2="718" y2="247" stroke="#c9b48a" stroke-width="2"/>
+    <circle cx="726" cy="275" r="3" fill="#e0a23c"/><rect x="584" y="286" width="22" height="6" fill="#2a1b11"/><rect x="712" y="286" width="22" height="6" fill="#2a1b11"/>
+  </g></g>
+
+  <!-- typewriter -->
+  <g class="obj" data-obj="typewriter" tabindex="0" role="button" aria-label="Typewriter: final report"><g class="art" filter="url(#sh)">
+    <path d="M278 302 L376 298 L380 372 L282 376 Z" fill="#f1ead6" filter="url(#paper)"/>
+    <g stroke="#6b6558" stroke-width="3" stroke-dasharray="14 5" opacity=".85" transform="rotate(-2 328 337)"><line x1="288" y1="318" x2="366" y2="318"/><line x1="288" y1="332" x2="354" y2="332"/><line x1="288" y1="346" x2="362" y2="346"/></g>
+    <rect x="238" y="368" width="182" height="16" rx="7" fill="#1f1f1d"/><rect x="238" y="368" width="182" height="5" rx="3" fill="#fff" opacity=".15"/><circle cx="232" cy="376" r="7" fill="#2b2b28"/><circle cx="426" cy="376" r="7" fill="#2b2b28"/>
+    <path d="M226 386 L432 386 L456 504 L204 504 Z" fill="#3a3a38"/><path d="M226 386 L432 386 L438 416 L220 416 Z" fill="#4e4e4a"/><path d="M226 386 L238 386 L216 504 L204 504 Z" fill="#fff" opacity=".07"/><path d="M432 386 L420 386 L444 504 L456 504 Z" fill="#000" opacity=".25"/>
+    <rect x="300" y="392" width="60" height="9" fill="#c9a96e" opacity=".85"/><text x="330" y="400" text-anchor="middle" font-family="Georgia,serif" font-size="7" fill="#3b2a1d">REPORTER</text>
+    <g stroke="#d9d2c0" stroke-width="11" stroke-dasharray="1 17" stroke-linecap="round"><line x1="248" y1="432" x2="410" y2="432"/><line x1="242" y1="454" x2="416" y2="454"/><line x1="234" y1="476" x2="424" y2="476"/></g>
+    <g stroke="#1b1b19" stroke-width="3" stroke-dasharray="1 17" stroke-linecap="round" opacity=".5"><line x1="248" y1="432" x2="410" y2="432"/><line x1="242" y1="454" x2="416" y2="454"/><line x1="234" y1="476" x2="424" y2="476"/></g>
+    <rect x="272" y="488" width="118" height="9" rx="3" fill="#d9d2c0"/>
+  </g></g>
+
+  <!-- newspaper -->
+  <g class="obj" data-obj="newspaper" tabindex="0" role="button" aria-label="Newspaper"><g class="art" filter="url(#sh)" transform="rotate(-3 580 402)">
+    <path d="M474 316 L686 314 L690 486 L478 490 Z" fill="#e6dcc3" filter="url(#paper)"/>
+    <path d="M474 316 L486 316 L474 328 Z" fill="#cbbe9c"/><path d="M582 314 L584 490" stroke="#000" stroke-opacity=".12" stroke-width="2"/><path d="M583 314 L585 490" stroke="#fff" stroke-opacity=".25"/>
+    <text x="582" y="336" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="bold" fill="#2b241c">THE CAPITAL COURIER</text>
+    <line x1="484" y1="342" x2="680" y2="342" stroke="#2b241c"/>
+    <rect x="484" y="350" width="196" height="14" fill="#2b241c" opacity=".92"/><rect x="484" y="374" width="64" height="40" fill="#8f8671"/><rect x="484" y="374" width="64" height="40" fill="#000" opacity=".15"/>
+    <g stroke="#5b4f40" stroke-width="3" stroke-dasharray="6 3"><line x1="556" y1="378" x2="680" y2="378"/><line x1="556" y1="388" x2="680" y2="388"/><line x1="556" y1="398" x2="680" y2="398"/><line x1="556" y1="408" x2="660" y2="408"/><line x1="484" y1="424" x2="680" y2="424"/><line x1="484" y1="434" x2="680" y2="434"/><line x1="484" y1="444" x2="640" y2="444"/><line x1="484" y1="454" x2="676" y2="454"/><line x1="484" y1="464" x2="610" y2="464"/></g>
+    <ellipse cx="640" cy="458" rx="17" ry="12" fill="none" stroke="#4a2c18" stroke-opacity=".35" stroke-width="2.5"/>
+    <text x="496" y="480" font-family="Courier New,monospace" font-size="7" fill="#8c3b32" opacity=".8" transform="rotate(-2 496 480)">checked p.2?</text>
+  </g></g>
+
+  <!-- loose papers -->
+  <g class="obj" data-obj="papers" tabindex="0" role="button" aria-label="Loose papers: sort what you have collected"><g class="art" filter="url(#sh)">
+    <path d="M706 324 L798 322 L804 444 L710 448 Z" fill="#d6caad" filter="url(#paper)" transform="rotate(-8 754 386)"/>
+    <path d="M712 328 L806 332 L802 452 L708 448 Z" fill="#e4d9be" filter="url(#paper)" transform="rotate(2 758 392)"/>
+    <path d="M716 330 L810 328 L812 450 L716 454 Z" fill="#ece2c8" filter="url(#paper)" transform="rotate(7 764 392)"/>
+    <g stroke="#b8ab8a" transform="rotate(7 764 392)"><line x1="726" y1="354" x2="802" y2="354"/><line x1="726" y1="370" x2="802" y2="370"/><line x1="726" y1="386" x2="802" y2="386"/><line x1="726" y1="402" x2="802" y2="402"/><line x1="726" y1="418" x2="802" y2="418"/></g>
+    <path d="M730 346 q6 -8 12 0 t12 0 t12 0" fill="none" stroke="#34507a" stroke-width="1.4" opacity=".7" transform="rotate(7 764 392)"/>
+    <circle cx="790" cy="430" r="13" fill="none" stroke="#5a3a1e" stroke-opacity=".28" stroke-width="2.5"/>
+    <path d="M732 334 v-10 a5 5 0 0 1 10 0 v12" fill="none" stroke="#a8a8a2" stroke-width="2"/>
+  </g></g>
+
+  <!-- notebook -->
+  <g class="obj" data-obj="notebook" tabindex="0" role="button" aria-label="Notebook"><g class="art" filter="url(#sh)">
+    <rect x="816" y="336" width="142" height="120" rx="4" fill="#2b1b12"/><rect x="820" y="338" width="136" height="116" rx="3" fill="url(#leather)"/>
+    <rect x="816" y="336" width="15" height="120" fill="#352217"/><g fill="#1b120c"><circle cx="824" cy="352" r="2"/><circle cx="824" cy="376" r="2"/><circle cx="824" cy="400" r="2"/><circle cx="824" cy="424" r="2"/></g>
+    <rect x="826" y="344" width="124" height="104" fill="none" stroke="#c9a96e" stroke-opacity=".35" stroke-dasharray="3 3"/>
+    <rect x="852" y="362" width="78" height="28" fill="#e8dcc0" filter="url(#paper)"/><text x="891" y="380" text-anchor="middle" font-family="Courier New,monospace" font-size="10" fill="#3b2a1d">NOTES</text>
+    <rect x="938" y="336" width="7" height="120" fill="#7a2f2a" opacity=".85"/><path d="M948 456 l8 -6 v6z" fill="#e8dcc0" opacity=".6"/>
+    <path d="M826 440 l20 -2" stroke="#fff" stroke-opacity=".12" stroke-width="3"/>
+  </g></g>
+
+  <!-- pencil (decor) -->
+  <g class="decor" filter="url(#sh2)" transform="rotate(8 360 598)"><rect x="262" y="590" width="118" height="8" rx="2" fill="#c9922d"/><rect x="262" y="590" width="118" height="2.5" fill="#fff" opacity=".25"/><path d="M380 590 l16 4 l-16 4z" fill="#e6c9a0"/><path d="M390 592 l6 2 l-6 2z" fill="#2b241c"/><rect x="254" y="590" width="9" height="8" fill="#b9857a"/></g>
+
+  <!-- plate: rice and chicken adobo -->
+  <g class="obj" data-obj="plate" tabindex="0" role="button" aria-label="Plate of leftover rice and adobo"><g class="art" filter="url(#sh)">
+    <ellipse cx="128" cy="548" rx="98" ry="36" fill="url(#plateG)"/><ellipse cx="128" cy="548" rx="98" ry="36" fill="none" stroke="#9c927a" stroke-opacity=".7" stroke-width="1.5"/>
+    <ellipse cx="128" cy="550" rx="72" ry="25" fill="#e6dfca" stroke="#b3a98f" stroke-opacity=".7"/><path d="M62 536 q30 -22 70 -22" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="3"/>
+    <!-- sauce pool -->
+    <path d="M118 548 q18 -16 54 -10 q18 8 4 20 q-30 12 -58 -2z" fill="#3b1d10" opacity=".75"/><path d="M120 552 q30 6 52 -4" fill="none" stroke="#7a4524" stroke-opacity=".6" stroke-width="2"/>
+    <!-- rice mound -->
+    <path d="M66 552 q-6 -26 26 -34 q28 -8 46 6 q14 14 -4 30 q-26 12 -52 8 q-12 -2 -16 -10z" fill="url(#riceG)" stroke="#a79c80" stroke-width="1.2"/><path d="M66 552 q-6 -26 26 -34 q28 -8 46 6 q14 14 -4 30 q-26 12 -52 8 q-12 -2 -16 -10z" fill="url(#grains)" opacity=".7"/>
+    <path d="M70 548 q14 14 52 8 q22 -4 20 -16" fill="none" stroke="#bfb494" stroke-opacity=".7" stroke-width="2"/><path d="M96 530 q8 -8 22 -6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+    <g fill="#fffdf4"><ellipse cx="62" cy="560" rx="2.4" ry="1.1"/><ellipse cx="152" cy="560" rx="2.4" ry="1.1" transform="rotate(30 152 560)"/><ellipse cx="108" cy="574" rx="2.4" ry="1.1"/><ellipse cx="86" cy="573" rx="2.4" ry="1.1" transform="rotate(-20 86 573)"/></g>
+    <!-- missing spoonful -->
+    <path d="M94 538 q10 -6 20 0 q-4 8 -20 0z" fill="#d8cfb4" opacity=".7"/>
+    <!-- adobo pieces -->
+    <path d="M144 534 q14 -12 32 -4 q10 8 2 18 q-16 10 -32 -2 q-6 -6 -2 -12z" fill="url(#meatG)"/><path d="M150 536 q10 -6 20 -3" fill="none" stroke="#d29a62" stroke-width="2.4" stroke-linecap="round" opacity=".8"/>
+    <path d="M150 556 q16 -8 30 0 q8 8 -4 14 q-18 4 -28 -4 q-4 -6 2 -10z" fill="url(#meatG)"/><path d="M156 559 q8 -4 16 -2" fill="none" stroke="#d29a62" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+    <ellipse cx="136" cy="560" rx="6" ry="4" fill="#4a2a14"/><circle cx="168" cy="548" r="2" fill="#1a0e07"/><circle cx="176" cy="552" r="1.6" fill="#1a0e07"/><circle cx="140" cy="548" r="1.6" fill="#1a0e07"/>
+    <path d="M160 544 q8 -4 12 2 q-6 6 -12 -2z" fill="#6a7a3a" opacity=".85"/><path d="M162 545 l8 0" stroke="#3d4a20" stroke-width=".8"/>
+    <!-- fork and spoon -->
+    <g transform="rotate(-14 38 566)"><rect x="8" y="563" width="52" height="4" rx="2" fill="#bdbdb6"/><path d="M60 560 q8 3 8 5 q0 2 -8 5z" fill="#d6d6cf"/><rect x="8" y="563" width="52" height="1.5" fill="#fff" opacity=".6"/></g>
+    <g transform="rotate(-6 36 582)"><rect x="8" y="580" width="46" height="3.5" rx="2" fill="#bdbdb6"/><path d="M54 576 l8 0 M54 579 l8 0 M54 585 l8 0 M54 588 l8 0" stroke="#d6d6cf" stroke-width="1.6"/></g>
+  </g></g>
+
+  <!-- pen -->
+  <g class="obj" id="penObj" data-obj="pen" tabindex="0" role="button" aria-label="Pen: pick it up to underline passages in documents"><g class="art" filter="url(#sh)" transform="rotate(-10 340 570)">
+    <rect x="252" y="560" width="152" height="13" rx="6.5" fill="url(#barrel)"/><rect x="252" y="561" width="152" height="3" rx="2" fill="#fff" opacity=".25"/>
+    <rect x="302" y="556" width="3" height="21" fill="url(#brass)"/><rect x="326" y="557" width="54" height="3.5" rx="1.5" fill="url(#brass)"/><circle cx="380" cy="559" r="2.6" fill="url(#brass)"/>
+    <path d="M404 560 L434 566.5 L404 573 Z" fill="url(#brass)"/><path d="M404 563 L420 566.5 L404 570 Z" fill="#fff" opacity=".35"/>
+  </g></g>
+
+  <!-- magnifier -->
+  <g class="obj" data-obj="magnifier" tabindex="0" role="button" aria-label="Magnifying glass: compare sources"><g class="art" filter="url(#sh)">
+    <circle cx="506" cy="560" r="31" fill="url(#glassG)" stroke="url(#brass)" stroke-width="7"/><line x1="528" y1="582" x2="560" y2="608" stroke="#3b2618" stroke-width="11" stroke-linecap="round"/><line x1="528" y1="582" x2="560" y2="608" stroke="#7a5638" stroke-width="5" stroke-linecap="round"/>
+    <path d="M490 548 Q498 538 510 538" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="3"/>
+    <g fill="#5b4f40" opacity=".35" transform="translate(0,0)"><rect x="492" y="560" width="26" height="2.5"/><rect x="494" y="567" width="22" height="2.5"/></g>
+  </g></g>
+
+  <!-- scrap pile (decor) with a hidden clipping -->
+  <g class="decor" filter="url(#sh2)">
+    <path d="M590 548 L644 540 L650 592 L596 598 Z" fill="#dcd0b2" filter="url(#paper)" transform="rotate(-9 620 570)"/>
+    <g stroke="#6b6558" stroke-width="2" stroke-dasharray="7 3" transform="rotate(-9 620 570)"><line x1="598" y1="556" x2="640" y2="552"/><line x1="598" y1="566" x2="636" y2="562"/><line x1="598" y1="576" x2="640" y2="572"/></g>
+  </g>
+  <g class="obj" data-obj="doro" tabindex="0" role="button" aria-label="Torn newspaper scrap"><g class="art" filter="url(#sh2)" transform="rotate(13 664 572)">
+    <path d="M632 552 L690 549 L694 588 L688 594 L634 592 Z" fill="#e3d8bb" filter="url(#paper)"/><path d="M632 552 L690 549" stroke="#fff" stroke-opacity=".3"/>
+    <rect x="638" y="556" width="46" height="7" fill="#3a3128" opacity=".85"/><rect x="638" y="567" width="20" height="14" fill="#9b927b"/>
+    <g stroke="#6b6558" stroke-width="1.6" stroke-dasharray="4 2"><line x1="662" y1="568" x2="684" y2="568"/><line x1="662" y1="574" x2="684" y2="574"/><line x1="638" y1="585" x2="684" y2="585"/></g>
+    <path id="doroMark" d="M636 590 q22 -5 48 0" fill="none" stroke="#8c3b32" stroke-width="2.4" stroke-linecap="round" style="display:none"/>
+  </g></g>
+  <g class="decor" filter="url(#sh2)">
+    <path d="M598 560 L660 566 L654 598 L600 592 Z" fill="#ebe1c6" filter="url(#paper)" transform="rotate(6 628 580)"/>
+    <g stroke="#34507a" stroke-width="1.3" fill="none" opacity=".7" transform="rotate(6 628 580)"><path d="M606 574 q6 -6 12 0 t12 0 t12 0"/><path d="M606 584 q8 -5 14 0 t14 0"/></g>
+  </g>
+
+  <!-- paper clips -->
+  <g class="obj" data-obj="clips" tabindex="0" role="button" aria-label="Paper clips"><g class="art" fill="none" stroke="#b4b4ae" stroke-width="2.4" filter="url(#sh2)">
+    <path d="M776 560 h22 a6 6 0 0 1 0 12 h-18 a4 4 0 0 1 0 -8 h14"/><path d="M798 582 h22 a6 6 0 0 1 0 12 h-18 a4 4 0 0 1 0 -8 h14" transform="rotate(8 806 588)"/>
+  </g></g>
+
+  <!-- case dossier -->
+  <g class="obj" data-obj="dossier" tabindex="0" role="button" aria-label="Case file 07: the story behind the headlines"><g class="art" filter="url(#sh)" transform="rotate(-7 94 400)">
+    <rect x="134" y="368" width="42" height="52" fill="#e6dcc3" filter="url(#paper)" transform="rotate(9 150 392)"/>
+    <g stroke="#5b4f40" stroke-width="2" stroke-dasharray="5 2" transform="rotate(9 150 392)"><line x1="142" y1="380" x2="170" y2="380"/><line x1="142" y1="388" x2="170" y2="388"/><line x1="142" y1="396" x2="162" y2="396"/></g>
+    <path d="M28 358 L64 358 L70 346 L114 346 L120 358 L154 358 L154 442 L28 442 Z" fill="#cdb27a" filter="url(#paper)"/>
+    <path d="M28 358 L64 358 L70 346 L114 346 L120 358 L154 358" fill="none" stroke="#000" stroke-opacity=".18"/>
+    <path d="M28 436 H154 V442 H28 Z" fill="#000" opacity=".16"/>
+    <path d="M34 352 l20 -2 l-3 9 z" fill="#e3c97f" opacity=".0"/>
+    <path d="M154 442 l-18 0 l18 -16 z" fill="#e8d8aa" opacity=".9"/><path d="M28 358 v8 l10 -8 z" fill="#a8905a" opacity=".6"/>
+    <path d="M70 360 v78 M118 360 v78" stroke="#000" stroke-opacity=".07"/><path d="M28 400 H154" stroke="#fff" stroke-opacity=".12"/>
+    <rect x="46" y="372" width="92" height="38" fill="#f1e8cf" stroke="#8a7656" stroke-opacity=".6"/>
+    <text x="92" y="386" text-anchor="middle" font-family="Courier New,monospace" font-size="10.5" font-weight="bold" fill="#2b241c">CASE FILE 07</text>
+    <text x="92" y="396" text-anchor="middle" font-family="Courier New,monospace" font-size="5.6" fill="#3b2f23">THE STORY BEHIND</text>
+    <text x="92" y="404" text-anchor="middle" font-family="Courier New,monospace" font-size="5.6" fill="#3b2f23">THE HEADLINES</text>
+    <path d="M52 417 q18 -6 40 -1 t38 -2" fill="none" stroke="#24407a" stroke-width="1.4" opacity=".75"/>
+    <rect x="96" y="420" width="46" height="13" fill="none" stroke="#8c3b32" stroke-width="1.6" opacity=".7" transform="rotate(-5 119 426)"/>
+    <text x="119" y="430" text-anchor="middle" font-family="Courier New,monospace" font-size="8" fill="#8c3b32" opacity=".8" transform="rotate(-5 119 426)">OPEN</text>
+    <rect x="30" y="356" width="26" height="9" fill="#e9dca0" opacity=".7" transform="rotate(-18 43 360)"/><rect x="128" y="352" width="24" height="9" fill="#e9dca0" opacity=".7" transform="rotate(14 140 356)"/>
+    <circle cx="44" cy="428" r="10" fill="none" stroke="#5a3a1e" stroke-opacity=".3" stroke-width="2.2"/>
+    <path d="M122 350 v-12 a5 5 0 0 1 10 0 v14" fill="none" stroke="#a8a8a2" stroke-width="2"/>
+  </g></g>
+
+  <!-- drawer: built into the desk front -->
+  <g class="obj" id="drawerObj" data-obj="archive" tabindex="0" role="button" aria-label="Archive drawer: open the archive"><g class="art">
+    <rect x="322" y="612" width="356" height="10" fill="#0c0805" opacity=".9"/>
+    <g class="peek"><rect x="334" y="609" width="332" height="6" fill="#e8dcc0"/><path d="M340 609 h40 M400 609 h60 M480 609 h90 M590 609 h60" stroke="#8c3b32" stroke-width="2"/></g>
+    <g class="drawerFace">
+      <rect x="318" y="616" width="364" height="48" rx="2" fill="url(#drawerFaceG)"/>
+      <rect x="318" y="616" width="364" height="48" rx="2" filter="url(#woodgrain)" opacity=".5" style="mix-blend-mode:multiply"/>
+      <rect x="318" y="616" width="364" height="48" rx="2" fill="none" stroke="#150e08" stroke-width="2"/>
+      <rect x="318" y="617" width="364" height="2" fill="#e0b98a" opacity=".35"/>
+      <rect x="328" y="624" width="344" height="32" fill="none" stroke="#150e08" stroke-opacity=".5"/>
+      <rect x="333" y="636" width="52" height="16" fill="#e8dcc0" stroke="#7d5f2c"/><text x="359" y="647" text-anchor="middle" font-family="Courier New,monospace" font-size="8" fill="#3b2a1d">ARCHIVE</text>
+      <rect x="450" y="632" width="100" height="12" rx="6" fill="#1b120b" opacity=".6"/>
+      <rect x="452" y="630" width="96" height="11" rx="5.5" fill="url(#brass)"/><rect x="456" y="632" width="88" height="2" fill="#fff" opacity=".5"/>
+      <circle cx="458" cy="636" r="3" fill="#6b5226"/><circle cx="542" cy="636" r="3" fill="#6b5226"/>
+      <circle cx="620" cy="640" r="4" fill="#1b120b"/><rect x="619" y="640" width="2" height="7" fill="#1b120b"/>
+    </g>
+  </g></g>
+
+  <!-- left drawer: opens, something peeks out, shuts again -->
+  <g class="decor"><rect x="62" y="612" width="238" height="14" fill="#0c0805" opacity=".92"/></g>
+  <g id="speakiG" class="egg-img"><image id="speakiImg" x="136" y="546" width="90" height="82" preserveAspectRatio="xMidYMax meet"/></g>
+  <g class="obj" id="drawerL" data-obj="drawerL" tabindex="0" role="button" aria-label="Left desk drawer"><g class="art"><g class="drawerFace">
+      <rect x="56" y="616" width="250" height="48" rx="2" fill="url(#drawerFaceG)"/>
+      <rect x="56" y="616" width="250" height="48" rx="2" filter="url(#woodgrain)" opacity=".5" style="mix-blend-mode:multiply"/>
+      <rect x="56" y="616" width="250" height="48" rx="2" fill="none" stroke="#150e08" stroke-width="2"/>
+      <rect x="56" y="617" width="250" height="2" fill="#e0b98a" opacity=".35"/>
+      <rect x="66" y="624" width="230" height="32" fill="none" stroke="#150e08" stroke-opacity=".5"/>
+      <rect x="155" y="632" width="52" height="12" rx="6" fill="#1b120b" opacity=".6"/>
+      <rect x="153" y="630" width="56" height="11" rx="5.5" fill="url(#brass)"/><rect x="157" y="632" width="48" height="2" fill="#fff" opacity=".5"/>
+      <circle cx="158" cy="636" r="3" fill="#6b5226"/><circle cx="204" cy="636" r="3" fill="#6b5226"/>
+    </g></g></g>
+
+  <!-- right drawer: stays open until it is shut -->
+  <g class="decor"><rect x="700" y="612" width="238" height="44" fill="#0c0805" opacity=".92"/></g>
+  <g id="shutTag" class="shutlbl"><rect x="884" y="626" width="50" height="14" fill="#e8dcc0" stroke="#7d5f2c"/><text x="909" y="636" text-anchor="middle" font-family="Courier New,monospace" font-size="6.8" fill="#3b2a1d">FREDDY!!!!!</text></g>
+  <g class="obj" id="freddyHit" data-obj="freddy" tabindex="-1" role="button" aria-label="Freddy Fazbear"><g class="art"><image id="freddyImg" x="759" y="520" width="120" height="116" preserveAspectRatio="xMidYMax meet"/></g></g>
+  <g class="obj" id="drawerR" data-obj="drawerR" tabindex="0" role="button" aria-label="Right desk drawer"><g class="art"><g class="drawerFace">
+      <rect x="694" y="616" width="250" height="48" rx="2" fill="url(#drawerFaceG)"/>
+      <rect x="694" y="616" width="250" height="48" rx="2" filter="url(#woodgrain)" opacity=".5" style="mix-blend-mode:multiply"/>
+      <rect x="694" y="616" width="250" height="48" rx="2" fill="none" stroke="#150e08" stroke-width="2"/>
+      <rect x="694" y="617" width="250" height="2" fill="#e0b98a" opacity=".35"/>
+      <rect x="704" y="624" width="230" height="32" fill="none" stroke="#150e08" stroke-opacity=".5"/>
+      <rect x="793" y="632" width="52" height="12" rx="6" fill="#1b120b" opacity=".6"/>
+      <rect x="791" y="630" width="56" height="11" rx="5.5" fill="url(#brass)"/><rect x="795" y="632" width="48" height="2" fill="#fff" opacity=".5"/>
+      <circle cx="796" cy="636" r="3" fill="#6b5226"/><circle cx="842" cy="636" r="3" fill="#6b5226"/>
+
+    </g></g></g>
+
+
+  <rect x="-600" width="2200" height="680" filter="url(#grain)" pointer-events="none" opacity=".55"/>
+  <rect id="dimLayer" x="-600" width="2200" height="680" fill="#000" opacity="0" pointer-events="none"/>
+  <rect x="-600" y="-30" width="2200" height="740" fill="url(#vig)" pointer-events="none"/>
+</svg>
+<p id="hint">Click objects on the desk. The pen underlines passages, the notebook holds your own notes, the loose papers sort what you have collected.</p>
+</main>
+
+<div id="overlays"></div>
+<div id="bubble" role="status" aria-live="polite" hidden></div>
+<footer id="foot">© 2026 Group Red — Philippine Literature in English</footer>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
