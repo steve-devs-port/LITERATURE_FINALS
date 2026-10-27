@@ -16,7 +16,7 @@ const SEC_HELP = { est: "Claims adequately supported by sources you cite. Be pre
 const defState = () => ({ introSeen: false, newspaperOpened: false, inspected: {}, claimsSeen: {}, claimAssess: {}, compare: {}, customPairs: [], notes: [], board: { items: [], links: [] }, report: { entries: [], finalized: false }, doro: { opened: false, unlocked: false }, marks: {}, sort: { piles: [], place: {} } });
 function load() { try { const r = JSON.parse(localStorage.getItem(KEY)); return Object.assign(defState(), r || {}); } catch (e) { return defState(); } }
 let S = load();
-function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { say("Could not save: browser storage is unavailable."); } }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { sayNote("Could not save: browser storage is unavailable."); } }
 
 /* ---- helpers ---- */
 const $ = (s, r = document) => r.querySelector(s);
@@ -39,34 +39,47 @@ function pick(key) {
   const l = pool[Math.floor(Math.random() * pool.length)];
   lastLine[key] = l; return l;
 }
+/* Investigator's Commentary: an optional setting, on by default. It lives under its own key, so resetting the case leaves it alone. */
+const PREF_KEY = "bth_commentary";
+let commentaryOn = true;
+try { commentaryOn = localStorage.getItem(PREF_KEY) !== "off"; } catch (e) { }
+function setCommentary(on) {
+  commentaryOn = !!on;
+  try { localStorage.setItem(PREF_KEY, commentaryOn ? "on" : "off"); } catch (e) { }   /* no storage: the choice still holds for this visit */
+  if (!commentaryOn) { clearTimeout(bubbleTimer); const b = $("#bubble"); if (b) b.hidden = true; }
+}
 let bubbleTimer;
-function say(text, ms = 4500) {
+function showBubble(text, ms = 4500) {
   if (!text) return;
   const b = $("#bubble"); b.textContent = text; b.hidden = false;
   clearTimeout(bubbleTimer); bubbleTimer = setTimeout(() => { b.hidden = true; }, ms);
 }
+/* optional thoughts and one-liners: silent when the setting is off */
+function say(text, ms) { if (commentaryOn) showBubble(text, ms); }
+/* feedback the player needs to understand what just happened: always shown */
+function sayNote(text, ms) { showBubble(text, ms); }
 
 /* ---- sound effects ---- */
 const SFX = {
-  drawerOpen: ["assets/audio/drawer-open.mp3", 400],      /* central, left and right drawers share this */
-  drawerClose: ["assets/audio/drawer-close.mp3", 400],    /* shared closing sound */
-  fileOpen: ["assets/audio/file-open.mp3", 350, true],          /* an evidence file inside the central drawer */
-  paperRustle: ["assets/audio/paper-rustle.mp3", 450],    /* loose papers, photographs, newspapers, documents */
-  scribble: ["assets/audio/scribble.mp3", 1200],          /* note-writing surface opens */
-  clink: ["assets/audio/clink.mp3", 350, true],                 /* plate, cup, coffee */
-  pinClack: ["assets/audio/pinboard-clack.mp3", 180, true],     /* corkboard pins and strings */
-  knock: ["assets/audio/knock.mp3", 0],                   /* ending: same file for every knock */
+  drawerOpen: ["assets/audio/drawer-open.mp3", 400],     
+  drawerClose: ["assets/audio/drawer-close.mp3", 400],   
+  fileOpen: ["assets/audio/file-open.mp3", 350, true],          
+  paperRustle: ["assets/audio/paper-rustle.mp3", 450],   
+  scribble: ["assets/audio/scribble.mp3", 1200],         
+  clink: ["assets/audio/clink.mp3", 350, true],                
+  pinClack: ["assets/audio/pinboard-clack.mp3", 180, true],    
+  knock: ["assets/audio/knock.mp3", 0],               
   speakiCry: ["assets/audio/speaki-cry.mp3", 0],
   freddy: ["assets/audio/har-har-har-har.mp3", 0],
-  typewriter: ["assets/audio/typewriter.mp3", 500],        /* typewriter clicked */
-  penClick: ["assets/audio/pen-click.mp3", 250, true],     /* pen picked up */
-  lampClick: ["assets/audio/lamp-click.mp3", 250, true],   /* desk lamp switch */
-  glass: ["assets/audio/glass.mp3", 450],                   /* magnifying glass */
-  notebookOpen: ["assets/audio/notebook-open.mp3", 600]    /* notebook opened */
+  typewriter: ["assets/audio/typewriter.mp3", 500],       
+  penClick: ["assets/audio/pen-click.mp3", 250, true],    
+  lampClick: ["assets/audio/lamp-click.mp3", 250, true], 
+  glass: ["assets/audio/glass.mp3", 450],                 
+  notebookOpen: ["assets/audio/notebook-open.mp3", 600]    
 };
 const sfxEl = {}, sfxLast = {}, sfxDead = {};
 let sfxMuted = false;
-/* plays a short effect; a missing file or a blocked play() is ignored. restart (or a third value of true): cut the previous play and start again instead of ignoring the new one */
+/* plays a short effect */
 function playSfx(key, restart) {
   try {
     const def = SFX[key]; if (!def || sfxMuted || sfxDead[key]) return;
@@ -79,7 +92,7 @@ function playSfx(key, restart) {
   } catch (e) { }
 }
 
-/* ---- overlay manager ---- */
+/*overlay manager */
 const OV = {};
 function openOv(id, render, cls = "", after = null) {
   const existed = !!$("#ov-" + id);
@@ -108,7 +121,7 @@ function closeOv(id) {
 function redraw(...ids) { ids.forEach(i => { if (OV[i]) drawOv(i); }); }
 function topOv() { const all = $$("#overlays .ov"); return all[all.length - 1]; }
 
-/* ---- actions (data-act) ---- */
+/*actions (data-act)*/
 const A = {};
 document.addEventListener("click", e => {
   if (UI.justMarked) return;
@@ -127,7 +140,7 @@ document.addEventListener("error", e => {
 }, true);
 A.close = t => closeOv(t.dataset.id);
 
-/* confirm box */
+/*confirm box*/
 let confirmFn = null;
 function confirmBox(msg, fn, label = "Delete") {
   confirmFn = fn;
@@ -135,7 +148,7 @@ function confirmBox(msg, fn, label = "Delete") {
 }
 A["confirm-yes"] = () => { const f = confirmFn; confirmFn = null; closeOv("confirm"); f && f(); };
 
-/* ---- progress ---- */
+/*progress */
 const nLit = () => Object.keys(S.inspected).filter(i => EV[i] && EV[i].track === "literary").length;
 const nCmp = () => Object.values(S.compare).filter(c => c.cls).length;
 function meter() {
@@ -160,7 +173,7 @@ function readiness() {
   return { items, ready: items.every(i => i[0]) };
 }
 
-/* ================= DESK ================= */
+/* desk */
 const OBJ = {
   pen: () => { if (!UI.pen) playSfx("penClick"); setPen(!UI.pen); },
   papers: () => { say(pick("papers")); playSfx("paperRustle"); openPapers(); },
@@ -189,7 +202,7 @@ const OBJ = {
   lamp: () => { const d = $("#dimLayer"); const dim = d.getAttribute("opacity") === "0"; d.setAttribute("opacity", dim ? ".35" : "0"); $("#lampGlow").style.opacity = dim ? 0 : 1; playSfx("lampClick"); say(pick("lamp")); },
   calendar: () => say(pick("calendar")), water: () => { playSfx("clink"); say(pick("water")); }, plate: () => { playSfx("clink"); say(pick("plate")); }, clips: () => say(pick("clips"))
 };
-function objClick(name) { if (UI.pen && name !== "pen") say("Pen's still in hand. Open a document and select a passage to underline it."); (OBJ[name] || (() => { }))(); }
+function objClick(name) { if (UI.pen && name !== "pen") sayNote("Pen's still in hand. Open a document and select a passage to underline it."); (OBJ[name] || (() => { }))(); }
 $$(".obj").forEach(o => {
   o.addEventListener("click", () => objClick(o.dataset.obj));
   o.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); objClick(o.dataset.obj); } });
@@ -219,7 +232,7 @@ A.go = t => ({ newspaper: openNews, archive: () => openArchive({}), lit: openLit
   const bg = new Image(); bg.onload = () => { const b = $("#deskBgImg"); b.setAttribute("href", "assets/desk-bg.jpg"); b.style.display = ""; }; bg.src = "assets/desk-bg.jpg";
 })();
 
-/* ================= INTRO / MENU ================= */
+/*intro/menu */
 function openIntro() {
   openOv("intro", () => `<h2>Behind the Headlines</h2>
   <p>You are an investigative journalist at a cluttered desk. In front of you: today's paper, a drawer of records, and Case File 07, the dossier you have been building.</p>
@@ -237,14 +250,16 @@ function openMenu() {
     return `<h2>Case file</h2>
     <h3>Progress toward the final report</h3>
     <ul class="check">${r.items.map(i => `<li class="${i[0] ? "ok" : "no"}">${i[0] ? "✓" : "○"} ${esc(i[1])}</li>`).join("")}</ul>
+    <h3>Settings</h3>
+    <div class="opt"><input type="checkbox" role="switch" id="opt-comm" aria-describedby="opt-comm-d" ${commentaryOn ? "checked" : ""}><div><label for="opt-comm">Investigator's Commentary</label><p class="muted" id="opt-comm-d">Show or hide the investigator's optional thoughts and one-liners.</p><p class="muted">Currently: <b id="opt-comm-s" aria-live="polite">${commentaryOn ? "On" : "Off"}</b></p></div></div>
     <h3>Housekeeping</h3>
     <div class="row"><button class="btn alt" data-act="intro-open">Show the introduction again</button><button class="btn danger" data-act="reset">Reset all saved progress</button></div>`;
   }, "md");
 }
 A["intro-open"] = () => { closeOv("menu"); openIntro(); };
-A.reset = () => confirmBox("This permanently erases your notes, comparisons, board, report, and progress in this browser.", () => { localStorage.removeItem(KEY); S = defState(); sfxMuted = true; try { $$("#overlays .ov").forEach(o => closeOv(o.dataset.id)); } finally { sfxMuted = false; } resetDrawers(); meter(); say("Desk cleared. A fresh start."); openIntro(); }, "Erase everything");
+A.reset = () => confirmBox("This permanently erases your notes, comparisons, board, report, and progress in this browser.", () => { localStorage.removeItem(KEY); S = defState(); sfxMuted = true; try { $$("#overlays .ov").forEach(o => closeOv(o.dataset.id)); } finally { sfxMuted = false; } resetDrawers(); meter(); sayNote("Desk cleared. A fresh start."); openIntro(); }, "Erase everything");
 
-/* ================= NEWSPAPER ================= */
+/* newspaper */
 function openNews() {
   S.newspaperOpened = true; save();
   openOv("newspaper", () => {
@@ -274,10 +289,10 @@ function claimPane() {
   <div class="row" style="margin-top:.5rem"><button class="btn" data-act="save-assess" data-id="${c.id}">Save assessment</button><span class="muted">${as.t ? "Saved " + new Date(as.t).toLocaleString() : "You can revise this any time."}</span></div></div>`;
 }
 A.claim = t => { UI.claim = t.dataset.id; S.claimsSeen[UI.claim] = 1; save(); meter(); redraw("newspaper"); };
-A["save-assess"] = t => { S.claimAssess[t.dataset.id] = { status: +$("#as-st").value, why: $("#as-why").value, t: Date.now() }; save(); redraw("newspaper"); say("Assessment saved. I can revise it later."); };
+A["save-assess"] = t => { S.claimAssess[t.dataset.id] = { status: +$("#as-st").value, why: $("#as-why").value, t: Date.now() }; save(); redraw("newspaper"); sayNote("Assessment saved. I can revise it later."); };
 A["cmp-claim"] = t => openCompare(t.dataset.id);
 
-/* ================= EVIDENCE VIEWER (archive + literary) ================= */
+/* arch/evi */
 function evViewer(ui, fixedTrack) {
   const list = EVIDENCE.filter(e => (fixedTrack ? e.track === fixedTrack : (ui.track === "all" || e.track === ui.track)) && (!ui.thread || ui.thread === "all" || e.threads.includes(ui.thread)));
   const which = fixedTrack ? "lit" : "arc";
@@ -307,7 +322,7 @@ A["open-ev"] = t => { playSfx("paperRustle"); openArchive({ sel: t.dataset.id })
 A["claim-from-ev"] = t => { UI.claim = t.dataset.id; S.claimsSeen[UI.claim] = 1; save(); openNews(); };
 A["note-ev"] = t => newNote({ rel: "ev:" + t.dataset.id });
 
-/* ================= ARCHIVE ================= */
+/* archive*/
 function openArchive(o) {
   if (o.sel) { UI.arc.sel = o.sel; UI.arc.track = "all"; UI.arc.thread = "all"; UI.arc.tab = "ev"; inspect(o.sel); }
   if (o.tab) UI.arc.tab = o.tab;
@@ -333,7 +348,7 @@ function register() {
   ${groups.map(g => `<h4 class="reg-h">${esc(g)}</h4>${SOURCES.filter(x => x.group === g).sort((a, b) => a.apa.localeCompare(b.apa)).map(refHtml).join("")}`).join("")}`;
 }
 
-/* ================= LITERARY ================= */
+
 function openLit() {
   openOv("lit", () => `<h2>The Bartolome File <span class="muted">· field notes</span></h2>
   <p>What the household went through, as far as I can piece it together: Amanda, her husband, their five sons, and how the same events reached each of them. These are my field notes, my reading of the household's account set beside the records in the Archive. The Archive tells me what happened; this file tells me how it was lived.</p>
@@ -341,12 +356,12 @@ function openLit() {
   ${evViewer(UI.lit, "literary")}`, "arch");
 }
 
-/* ================= THREADS ================= */
+
 function openThreads() {
   openOv("threads", () => `<h2>Investigation threads</h2><p class="muted">Five strands, in any order. Items overlap on purpose.</p>${THREADS.map(t => { const d = t.ev.filter(e => S.inspected[e]).length; return `<div class="box"><h3>Thread ${t.id}: ${esc(t.name)} <span class="tag">${t.track}</span></h3><p>${esc(t.blurb)}</p><p class="muted">Guiding questions: ${t.qs.map(esc).join(" · ")}</p><div class="chips">${t.ev.map(e => `<button class="chip ${S.inspected[e] ? "on" : ""}" data-act="open-ev" data-id="${e}">${esc(EV[e].title)}</button>`).join("")}</div>${t.claims.length ? `<div class="chips">${t.claims.map(c => `<button class="chip ${S.claimsSeen[c] ? "on" : ""}" data-act="claim-from-ev" data-id="${c}">Claim: ${esc(CL[c].short)}</button>`).join("")}</div>` : ""}<p class="muted">${d} of ${t.ev.length} items inspected</p></div>`; }).join("")}`, "md");
 }
 
-/* ================= CASE DOSSIER ================= */
+
 const leadDone = l => l.kind === "claim" ? !!S.claimsSeen[l.id] : !!S.inspected[l.id];
 function openDossier() {
   openOv("dossier", () => `<div class="dos-tab">${esc(DOSSIER.title)}</div><h2 class="dos-h">${esc(DOSSIER.subtitle)}</h2>
@@ -362,8 +377,8 @@ function openDossier() {
   <div class="row"><button class="btn" data-act="note-new">Write a note</button><button class="btn alt" data-act="go" data-to="newspaper">Open the newspaper</button><button class="btn alt" data-act="go" data-to="threads">Investigation threads</button></div>`, "dos");
 }
 
-/* ================= PEN: underline passages in documents ================= */
-/* underlines live in S.marks as [start, end] character ranges per paragraph; the documents themselves are never edited */
+/* apple pen, pineapple pen */
+
 function unwrapMarks(p) { $$("span.ul", p).forEach(u => { const par = u.parentNode; while (u.firstChild) par.insertBefore(u.firstChild, u); par.removeChild(u); par.normalize(); }); }
 function wrapRange(p, s0, e0) {
   const w = document.createTreeWalker(p, NodeFilter.SHOW_TEXT); let pos = 0, n; const jobs = [];
@@ -377,7 +392,7 @@ function addMark(key, a, b) {
   const list = (S.marks[key] = S.marks[key] || []); list.push([a, b]); list.sort((x, y) => x[0] - y[0]);
   const out = []; list.forEach(r => { const l = out[out.length - 1]; if (l && r[0] <= l[1]) l[1] = Math.max(l[1], r[1]); else out.push([r[0], r[1]]); }); S.marks[key] = out;
 }
-/* with the pen in hand: a selection is underlined; a plain click on an underline rubs it out */
+
 function penUp(e) {
   if (!UI.pen) return;
   const sel = window.getSelection(); if (!sel || !sel.rangeCount) return;
@@ -403,7 +418,7 @@ function penUp(e) {
 /* capture phase and synchronous: this must run before the click that ends the drag, or a claim would open and redraw the page first */
 document.addEventListener("pointerup", e => { if (UI.pen) penUp(e); }, true);
 
-/* ================= LOOSE PAPERS: sort what has been collected ================= */
+/*LOOSE PAPERS */
 /* S.sort = { piles: [{id, name}], place: { evidenceId: pileId } }; a document with no placement is simply unsorted */
 const collectedIds = () => EVIDENCE.filter(e => S.inspected[e.id] || (e.id === "news" && S.newspaperOpened)).map(e => e.id);
 const pileOf = id => { const pl = S.sort.place[id]; return S.sort.piles.some(p => p.id === pl) ? pl : ""; };
@@ -448,7 +463,7 @@ document.addEventListener("dragover", e => { const d = e.target.closest && e.tar
 document.addEventListener("dragend", () => { dragCard = null; $$(".drop.over").forEach(x => x.classList.remove("over")); });
 document.addEventListener("drop", e => { const d = e.target.closest && e.target.closest("[data-drop]"); if (!d || !dragCard) return; e.preventDefault(); const id = dragCard; dragCard = null; moveDoc(id, d.dataset.drop); });
 
-/* ================= COMPARE ================= */
+/* compare*/
 const pairsFor = c => [...CL[c].ev, ...S.customPairs.filter(p => p.startsWith(c + "|")).map(p => p.split("|")[1])];
 function openCompare(c) { if (c) UI.cmp.claim = c; openOv("compare", renderCompare, "blot"); }
 function renderCompare() {
@@ -475,8 +490,8 @@ A["cmp-pick"] = t => { UI.cmp.claim = t.dataset.id; redraw("compare"); };
 A["cmp-add"] = () => { S.customPairs.push(UI.cmp.claim + "|" + $("#cmp-add").value); save(); redraw("compare"); };
 A["cmp-save"] = t => {
   const k = t.dataset.c + "|" + t.dataset.e, r = $(`input[name="r-${k}"]:checked`);
-  if (!r) { say("Pick a classification first. “Unresolved” is a valid answer."); return; }
-  S.compare[k] = { cls: r.value, why: document.getElementById("w-" + k).value, t: Date.now() }; save(); meter(); redraw("compare"); say("Decision saved. New evidence may change it.");
+  if (!r) { sayNote("Pick a classification first. “Unresolved” is a valid answer."); return; }
+  S.compare[k] = { cls: r.value, why: document.getElementById("w-" + k).value, t: Date.now() }; save(); meter(); redraw("compare"); sayNote("Decision saved. New evidence may change it.");
 };
 const CLS_REL = { supports: "Supports", contradicts: "Contradicts", context: "Contextualizes", none: "Raises a question", unresolved: "Raises a question" };
 A["cmp-board"] = t => {
@@ -484,10 +499,10 @@ A["cmp-board"] = t => {
   const a = ensurePin("claim", t.dataset.c), b = ensurePin("ev", t.dataset.e);
   const rel = CLS_REL[d.cls], ex = S.board.links.find(l => (l.a === a && l.b === b) || (l.a === b && l.b === a));
   if (ex) { ex.rel = rel; ex.why = d.why; } else S.board.links.push({ id: uid(), a: b, b: a, rel, why: d.why });
-  save(); playSfx("pinClack"); redraw("board"); say("Linked on the board. That line is my interpretation.");
+  save(); playSfx("pinClack"); redraw("board"); sayNote("Linked on the board. That line is my interpretation.");
 };
 
-/* ================= NOTES ================= */
+/*nots*/
 function relLabel(rel) { if (!rel) return ""; const [t, id] = rel.split(":"); return t === "ev" ? (EV[id] || {}).title : t === "claim" ? (CL[id] || {}).short : (QUESTIONS.find(q => q.id === id) || {}).text; }
 function relOptions(sel) {
   return `<option value="">None</option><optgroup label="Evidence">${EVIDENCE.map(e => `<option value="ev:${e.id}" ${sel === "ev:" + e.id ? "selected" : ""}>${esc(e.title)}</option>`).join("")}</optgroup><optgroup label="Newspaper claims">${CLAIMS.map(c => `<option value="claim:${c.id}" ${sel === "claim:" + c.id ? "selected" : ""}>${esc(c.short)}</option>`).join("")}</optgroup><optgroup label="Questions">${QUESTIONS.map(q => `<option value="q:${q.id}" ${sel === "q:" + q.id ? "selected" : ""}>${esc(q.text)}</option>`).join("")}</optgroup>`;
@@ -506,7 +521,7 @@ A["note-new"] = () => newNote({});
 A["note-edit"] = t => newNote({ id: t.dataset.id });
 A["note-del"] = t => confirmBox("Delete this note? It will also be removed from the board and report.", () => { const id = t.dataset.id; S.notes = S.notes.filter(n => n.id !== id); S.board.items = S.board.items.filter(i => i.id !== "note:" + id); S.board.links = S.board.links.filter(l => l.a !== "note:" + id && l.b !== "note:" + id); S.report.entries.forEach(e => e.notes = e.notes.filter(n => n !== id)); save(); meter(); redraw("notebook", "board", "report"); });
 
-/* ================= BOARD ================= */
+/* board*/
 function pinTitle(it) {
   if (it.type === "ev") return (EV[it.ref] || {}).title || it.ref;
   if (it.type === "claim") return (CL[it.ref] || {}).short || it.ref;
@@ -521,7 +536,7 @@ function ensurePin(type, ref) {
   if (!S.board.items.find(i => i.id === id)) { const n = S.board.items.length; S.board.items.push({ id, type, ref, x: 3 + (n % 4) * 25, y: 4 + (Math.floor(n / 4) % 3) * 31 + (n % 2) * 14 }); save(); playSfx("pinClack"); }
   return id;
 }
-A.pin = t => { ensurePin(t.dataset.type, t.dataset.ref); redraw("board"); say("Pinned. Open the board to arrange it."); };
+A.pin = t => { ensurePin(t.dataset.type, t.dataset.ref); redraw("board"); sayNote("Pinned. Open the board to arrange it."); };
 function openBoard() { openOv("board", renderBoard, "", drawLinks); }
 function trayItems() {
   const b = UI.board;
@@ -617,7 +632,7 @@ A["p-link"] = t => {
   UI.board.from = null; linkDialog({ a: f, b: id });
 };
 A.tag = t => { UI.board.sel = UI.board.sel === t.dataset.id ? null : t.dataset.id; redraw("board"); };
-A["lp-save"] = () => { const l = S.board.links.find(x => x.id === UI.board.sel); if (!l) return; l.rel = $("#lp-rel").value; l.why = $("#lp-why").value; save(); redraw("board", "report"); say("Connection updated. Still my interpretation."); };
+A["lp-save"] = () => { const l = S.board.links.find(x => x.id === UI.board.sel); if (!l) return; l.rel = $("#lp-rel").value; l.why = $("#lp-why").value; save(); redraw("board", "report"); sayNote("Connection updated. Still my interpretation."); };
 A["lp-del"] = () => { S.board.links = S.board.links.filter(l => l.id !== UI.board.sel); UI.board.sel = null; save(); redraw("board", "report"); };
 A["lp-close"] = () => { UI.board.sel = null; redraw("board"); };
 document.addEventListener("change", e => {
@@ -629,7 +644,7 @@ function linkDialog(o) {
   const nm = id => pinTitle(S.board.items.find(i => i.id === id) || { type: "x", ref: id });
   openOv("linkEd", () => `<h2>New connection</h2><p><b>${esc(nm(l.a))}</b> → <b>${esc(nm(l.b))}</b></p><label for="l-rel">Relationship</label><select id="l-rel">${RELATIONS.map(r => `<option value="${r}">${r === "Contextualizes" ? "Contextualizes (adds context)" : r}</option>`).join("")}</select><label for="l-why">Why do you think so? (optional)</label><textarea id="l-why"></textarea><p class="muted">This is your interpretation. A string does not prove causation, coordination, or conspiracy.</p><div class="row"><button class="btn" data-act="l-save">Tie the string</button><button class="btn alt" data-act="close" data-id="linkEd">Cancel</button></div>`, "sm");
 }
-A["l-save"] = () => { const { l } = UI.linkEdit; l.rel = $("#l-rel").value; l.why = $("#l-why").value; l.id = uid(); S.board.links.push(l); UI.board.sel = l.id; save(); playSfx("pinClack"); closeOv("linkEd"); redraw("board", "report"); say("Connection saved. Still my interpretation."); };
+A["l-save"] = () => { const { l } = UI.linkEdit; l.rel = $("#l-rel").value; l.why = $("#l-why").value; l.id = uid(); S.board.links.push(l); UI.board.sel = l.id; save(); playSfx("pinClack"); closeOv("linkEd"); redraw("board", "report"); sayNote("Connection saved. Still my interpretation."); };
 /* drag pins */
 let drag = null;
 document.addEventListener("pointerdown", e => {
@@ -655,7 +670,7 @@ document.addEventListener("keydown", e => {
 });
 window.addEventListener("resize", drawLinks);
 
-/* ================= RADIO ================= */
+/*radio */
 const audio = new Audio("assets/audio/radio-track.mp3"); audio.preload = "metadata"; audio.loop = true;
 let audioMissing = false, jokeShown = false;
 try { audio.volume = parseFloat(localStorage.getItem("bth_vol") || "0.7"); } catch (e) { }
@@ -675,7 +690,7 @@ function openRadio() {
 }
 A["r-play"] = () => { if (audio.paused) audio.play().catch(() => { audioMissing = true; redraw("radio"); }); else audio.pause(); };
 
-/* ================= REPORT ================= */
+/* report */
 const flags = e => {
   const f = [];
   if (!e.ev.length && e.sec !== "unr") f.push("Cites no evidence item.");
@@ -745,7 +760,7 @@ A["r-record"] = () => {
 A["r-dl"] = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([buildRecord()], { type: "text/plain" })); a.download = "for-the-record.txt"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); };
 A["r-pass"] = () => { S.report.finalized = true; save(); sfxMuted = true; try { $$("#overlays .ov").forEach(o => closeOv(o.dataset.id)); } finally { sfxMuted = false; } startEnding(); };
 
-/* ================= ENDING: PASS IT ON ================= */
+/* ending */
 let endTimers = [];
 const END_FOLDER = `<svg viewBox="0 0 300 200" class="scene" role="img" aria-label="A manila folder on a desk"><rect width="300" height="200" fill="#2b1f17"/><rect x="40" y="60" width="220" height="110" fill="#d8b97a"/><path d="M40 60 h70 l10 -14 h-80z" fill="#d8b97a"/><rect x="85" y="100" width="130" height="16" fill="#8c3b32" opacity=".8"/><text x="150" y="146" text-anchor="middle" font-family="Courier New,monospace" font-size="14" fill="#6a4f2c">FOR THE RECORD</text></svg>`;
 const END_DESK2 = `<svg viewBox="0 0 400 240" class="scene" role="img" aria-label="Another journalist's desk with an open folder, a report, a newspaper, and an investigation board"><rect width="400" height="240" fill="#2c241f"/><rect x="110" y="14" width="180" height="84" fill="#4d3322"/><rect x="116" y="20" width="168" height="72" fill="#a07850"/><rect x="126" y="30" width="34" height="26" fill="#efe4c8"/><rect x="170" y="28" width="38" height="22" fill="#d9c8a0"/><rect x="222" y="32" width="36" height="30" fill="#efe4c8"/><g id="newq" style="opacity:0;transition:opacity 2s"><rect x="196" y="58" width="68" height="28" fill="#f0e2a5" transform="rotate(-3 230 72)"/><text x="230" y="75" text-anchor="middle" font-family="Courier New,monospace" font-size="8" fill="#2b241c" transform="rotate(-3 230 72)">Who was never asked?</text></g><rect y="100" width="400" height="140" fill="#5a3e2b"/><rect x="60" y="130" width="130" height="86" fill="#d8b97a"/><rect x="70" y="136" width="110" height="74" fill="#efe6cf"/><g stroke="#6b6558" stroke-width="3" stroke-dasharray="10 4"><line x1="78" y1="150" x2="170" y2="150"/><line x1="78" y1="162" x2="162" y2="162"/><line x1="78" y1="174" x2="170" y2="174"/><line x1="78" y1="186" x2="150" y2="186"/></g><rect x="206" y="136" width="120" height="84" fill="#e6dcc3" transform="rotate(3 266 178)"/><text x="266" y="156" text-anchor="middle" font-family="Georgia,serif" font-size="9" font-weight="bold" fill="#2b241c" transform="rotate(3 266 178)">THE CAPITAL COURIER</text><g stroke="#5b4f40" stroke-width="3" stroke-dasharray="6 3" transform="rotate(3 266 178)"><line x1="214" y1="170" x2="318" y2="170"/><line x1="214" y1="180" x2="318" y2="180"/><line x1="214" y1="190" x2="300" y2="190"/></g></svg>`;
@@ -787,7 +802,7 @@ A["e-skip"] = endFinal;
 A["e-close"] = () => { const e = $("#end"); e && e.remove(); say("Back at the desk. It feels quieter."); };
 A["e-replay"] = () => startEnding();
 
-/* ================= EASTER EGG: optional, never touches progress ================= */
+/*easter egg */
 const DORO_ART = `<svg viewBox="0 0 600 340" role="img" aria-label="Tabloid illustration of a city skyline with smoke"><rect width="600" height="340" fill="#d9c9a0"/><rect y="230" width="600" height="110" fill="#6f6048"/><g fill="#8a7a60"><rect x="20" y="130" width="50" height="110"/><rect x="80" y="100" width="60" height="140"/><rect x="150" y="150" width="45" height="90"/><rect x="400" y="120" width="55" height="120"/><rect x="465" y="90" width="70" height="150"/><rect x="545" y="140" width="45" height="100"/></g><g fill="#c0392b"><path d="M300 60 L270 240 H330 Z"/></g><g stroke="#f4ecd6" stroke-width="3"><path d="M288 110 H312 M282 150 H318 M276 190 H324"/></g><g fill="#3b3329" opacity=".55"><circle cx="150" cy="90" r="26"/><circle cx="178" cy="70" r="20"/><circle cx="440" cy="70" r="28"/><circle cx="470" cy="46" r="20"/></g><circle cx="300" cy="262" r="46" fill="#f4efe0" stroke="#2b241c" stroke-width="3" stroke-dasharray="7 5"/><g fill="#2b241c"><circle cx="286" cy="256" r="4"/><circle cx="314" cy="256" r="4"/><path d="M290 274 q10 7 20 0" fill="none" stroke="#2b241c" stroke-width="3"/></g><g fill="#2b241c"><circle cx="90" cy="290" r="3"/><circle cx="110" cy="300" r="3"/><circle cx="480" cy="290" r="3"/><circle cx="520" cy="304" r="3"/><circle cx="210" cy="306" r="3"/></g></svg>`;
 function markDoro() { const m = $("#doroMark"); if (m) m.style.display = S.doro.unlocked ? "" : "none"; }
 function openDoro() {
@@ -822,12 +837,9 @@ document.addEventListener("click", e => {
   if (++demo.n >= 3) { demo.n = 0; demo.el = null; sfxMuted = true; try { $$("#overlays .ov").forEach(o => closeOv(o.dataset.id)); } finally { sfxMuted = false; } startEnding(); }
 });
 
-/* ================= SCRAP THE CASE: tear up the report sheet, then start over =================
-   The button lives in the Report (typewriter) panel. Only this game's data is cleared: the KEY entry in localStorage
-   plus in-memory state. Unrelated localStorage entries (and the saved radio volume, a setting) are left alone.
-   The reset is driven by a timer, never by animation events, so it completes even if the animation cannot run. */
-const RIP_SRC = "assets/audio/paper-rip.mp3"; /* put your own paper-ripping sound here (keep the file name) */
-const SCRAP_MS = 1300;                        /* the reset never waits longer than this */
+
+const RIP_SRC = "assets/audio/paper-rip.mp3"; 
+const SCRAP_MS = 1300;                        
 let scrapping = false, ripSound = null;
 const rr = (a, b) => a + Math.random() * (b - a);
 const reducedMotion = () => { try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } };
@@ -836,12 +848,12 @@ function ripAudio() {
   if (!ripSound) { try { ripSound = new Audio(RIP_SRC); ripSound.preload = "auto"; ripSound.volume = .6; } catch (e) { ripSound = null; } }
   return ripSound;
 }
-function playRip() { /* only ever called from the confirmed click; a missing or blocked file is silently ignored */
+function playRip() { 
   const a = ripAudio(); if (!a) return;
   try { a.currentTime = 0; const p = a.play(); if (p && p.catch) p.catch(() => { }); } catch (e) { }
 }
 
-/* a ragged tear: one wandering vertical rip, then a horizontal rip across each half, giving four scraps */
+/* a ragged tear */
 function tearShapes(W, H) {
   const jag = () => (Math.random() < .12 ? rr(-10, 10) : rr(-4.5, 4.5));
   const xc = W * rr(.42, .58), ph = rr(0, 6.28), amp = W * rr(.015, .04);
@@ -862,11 +874,11 @@ function tearShapes(W, H) {
     { list: [...HR.slice(1).reverse(), ...V.slice(iR), c(W, H)], vs: 1, hs: 1 }
   ];
   return defs.map(d => {
-    /* "back" is the exact outline; "front" pulls the torn edges in a few pixels so a pale paper fibre rim shows beneath */
+   
     const back = [], front = [], start = [], xs = [], yv = [];
     d.list.forEach(p => {
       back.push(`${p.x.toFixed(1)}px ${p.y.toFixed(1)}px`);
-      start.push(`${(p.x - (p.v ? d.vs * 1.4 : 0)).toFixed(1)}px ${(p.y - (p.h ? d.hs * 1.4 : 0)).toFixed(1)}px`); /* overlaps its neighbours slightly so no hairline shows before the rip */
+      start.push(`${(p.x - (p.v ? d.vs * 1.4 : 0)).toFixed(1)}px ${(p.y - (p.h ? d.hs * 1.4 : 0)).toFixed(1)}px`); 
       front.push(`${(p.x + (p.v ? d.vs * rr(1.6, 4.8) : 0)).toFixed(1)}px ${(p.y + (p.h ? d.hs * rr(1.6, 4.8) : 0)).toFixed(1)}px`);
       xs.push(p.x); yv.push(p.y);
     });
@@ -874,7 +886,7 @@ function tearShapes(W, H) {
   });
 }
 
-/* copies the report sheet four times, each clipped to one scrap, and hides the real sheet. Returns the layer, or null. */
+
 function tearPaper(paper) {
   const r = paper.getBoundingClientRect(), W = r.width, H = r.height;
   if (W < 60 || H < 60) return null;
@@ -907,7 +919,7 @@ function tearPaper(paper) {
   });
   document.body.append(layer);
   copies.forEach(k => { k.scrollTop = paper.scrollTop; });
-  paper.style.visibility = "hidden"; /* last step: from here the player sees only the scraps */
+  paper.style.visibility = "hidden"; 
   return layer;
 }
 
@@ -922,7 +934,7 @@ function resetAllProgress() {
   try { audio.pause(); audio.currentTime = 0; } catch (e) { }
   sfxMuted = true; try { $$("#overlays .ov").forEach(o => closeOv(o.dataset.id)); } finally { sfxMuted = false; }
   resetDrawers(); setPen(false); meter(); markDoro();
-  say("Desk cleared. A fresh start."); openIntro();
+  sayNote("Desk cleared. A fresh start."); openIntro();
 }
 
 function scrapTheCase() {
@@ -950,7 +962,7 @@ A.scrap = () => {
   confirmBox("Do you really want to abandon this investigation and start over? Scrapping the case permanently erases your saved investigation progress, collected evidence progress, notes, source comparisons, corkboard arrangements, and report draft in this browser. This cannot be undone.", scrapTheCase, "Scrap the case");
 };
 
-/* ================= SIDE DRAWERS: two small surprises that stay on the desk ================= */
+/* side drawers */
 const EGG_IMG = { speakiImg: ["assets/images/speaki.png", "assets/speaki.png", "assets/images/Speaki.png", "assets/Speaki.png"], freddyImg: ["assets/images/freddy-fazbear.png", "assets/freddy-fazbear.png", "assets/images/Freddy-Fazbear.png", "assets/images/freddy.png", "assets/freddy.png"] };
 const egg = { busyC: false, busyL: false, busyR: false, openR: false, timers: [] };
 const eggLater = (fn, ms) => { egg.timers.push(setTimeout(() => { try { fn(); } catch (e) { } }, ms)); };
@@ -962,7 +974,7 @@ function loadEggImages() {
     tryNext(0);
   });
 }
-/* left drawer: opens, Speaki peeks out and cries, the drawer shuts by itself */
+/* left drawer opens, Speaki peeks out and cries, the drawer shuts by itself */
 function speakiDrawer() {
   if (egg.busyL) return; egg.busyL = true;
   const d = $("#drawerL"), sp = $("#speakiG"); d.setAttribute("aria-disabled", "true");
@@ -973,7 +985,7 @@ function speakiDrawer() {
   eggLater(() => { d.classList.remove("opening"); playSfx("drawerClose"); }, 2250);
   eggLater(() => { egg.busyL = false; d.removeAttribute("aria-disabled"); }, 2700);
 }
-/* right drawer: stays open with Freddy inside until the player shuts it */
+/* right drawer stays open with Freddy inside until the player shuts it */
 function freddyDrawer() {
   if (egg.busyR) return;
   if (egg.openR) { closeRight(); return; }
@@ -993,9 +1005,9 @@ function closeRight(quiet) {
 function freddyClick() {
   if (!egg.openR) return;
   const f = $("#freddyHit"); f.classList.remove("wob"); void f.getBoundingClientRect(); f.classList.add("wob");
-  playSfx("freddy");   /* ignored while it is still playing, so clicks never stack */
+  playSfx("freddy");  
 }
-/* back to a closed, quiet desk (used by the resets) */
+
 function resetDrawers() {
   egg.timers.forEach(clearTimeout); egg.timers = []; egg.busyC = egg.busyL = egg.busyR = egg.openR = false;
   ["drawerL", "drawerR"].forEach(i => { const d = $("#" + i); if (d) { d.classList.remove("opening"); d.removeAttribute("aria-disabled"); } });
@@ -1004,6 +1016,13 @@ function resetDrawers() {
   const f = $("#freddyHit"); f && f.setAttribute("tabindex", "-1");
 }
 
-/* ================= INIT ================= */
+
+document.addEventListener("change", e => {
+  if (!e.target || e.target.id !== "opt-comm") return;
+  setCommentary(e.target.checked);
+  const st = $("#opt-comm-s"); if (st) st.textContent = commentaryOn ? "On" : "Off";
+});
+
+
 meter(); markDoro(); loadEggImages();
 if (!S.introSeen) openIntro();

@@ -262,7 +262,7 @@ const EVIDENCE = [
   },
 
   /* literary */
-  // TODO: the edition, translation and publication details belong in the Source Register (S1, S2); keep them out of in-world text.
+ 
   {
     id: "lAuthor", title: "The Bartolome household: what I have to go on", cat: "Notes on the Bartolome household", track: "literary", auth: "L", date: "The martial-law decade", threads: ["D"], src: ["S1", "S2"],
     prov: "My field notes, set beside the records.",
@@ -343,7 +343,7 @@ const EVIDENCE = [
     limits: "Two vantage points, and neither is complete.",
     q: ["Where do the household's account and the front page actually disagree?"]
   },
-  // TODO: add verified short quotations with page numbers from the edition used (see Source Register S1).
+  //add verified short quotations with page numbers from the edition used 
   {
     id: "lQuotes", title: "Moments in the household's account worth a second look", cat: "Notes on the Bartolome household", track: "literary", auth: "L", date: "n/a", threads: ["D"], src: ["S1"],
     prov: "My field notes.",
@@ -354,7 +354,7 @@ const EVIDENCE = [
   }
 ];
 
-/* claims. compare: evidence ids with a hint that appears after the player records a decision */
+/* claims compare evidence ids with a hint that appears after the player records a decision */
 const CLAIMS = [
   {
     id: "c1", short: "“Calm returns to the capital”", thread: "A", text: "CALM RETURNS TO THE CAPITAL as Citizens Resume Daily Routines",
@@ -421,7 +421,7 @@ const CLAIMS = [
   }
 ];
 
-/* newspaper layout: [[id|text]] marks an inspectable claim */
+/* newspaper layout */
 const NEWS = {
   name: "THE CAPITAL COURIER",
   tag: "Metropolitan edition · Morning",
@@ -434,7 +434,7 @@ const NEWS = {
   ]
 };
 
-/* investigation questions (pin to board) */
+/* investigation questions */
 const QUESTIONS = [
   { id: "q1", text: "Who produced this report, and for whom?" },
   { id: "q2", text: "Which voices are missing?" },
@@ -480,7 +480,7 @@ const DIALOGUE = {
   dossier: ["Case file seven. Still thinner than I'd like.", "Everything in here has a source. I should know which.", "The page of unanswered questions is the longest one.", "Start from what I can show, not from what I suspect."],
 };
 
-/* extra lines that appear only when a condition is true (state S) */
+/* extra lines that appear only when a condition is true */
 const DIALOGUE_PROGRESS = [
   { obj: "newspaper", when: s => Object.keys(s.claimsSeen).length >= 5, lines: ["Several claims checked. A few still bother me."] },
   { obj: "notebook", when: s => s.notes.length === 0, lines: ["Nothing written down yet. My own thoughts go in here."] },
@@ -511,7 +511,7 @@ const DORO = {
   video: "assets/doro-truth.mp4"
 };
 
-/* case dossier on the desk. Leads reuse existing claim ids (c1..c9) and evidence ids; no separate progress is stored. */
+/* case dossier on the desk */
 const DOSSIER = {
   title: "CASE FILE 07",
   subtitle: "The story behind the headlines",

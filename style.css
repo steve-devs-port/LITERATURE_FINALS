@@ -311,3 +311,9 @@ body.pen-on .ov ::selection{background:#e8c36a88}
 .pcard select{max-width:9.5rem;font-size:.76rem;padding:.15rem}
 .panel.blot .pile h3,.panel.blot .pile .muted{color:var(--ink)}
 .panel.blot .pile .muted{color:var(--faded)}
+
+/* Case file settings */
+.opt{display:flex;gap:.8rem;align-items:flex-start;padding:.6rem .85rem;border:1px solid #9a8a6a;background:#ffffff3a;box-shadow:1px 2px 0 #0000001a}
+.opt input{width:1.25rem;height:1.25rem;margin-top:.15rem;accent-color:var(--stamp);flex:none;cursor:pointer}
+.opt label{margin:0;font-weight:600;cursor:pointer}
+.opt p{margin:.15rem 0 0}
