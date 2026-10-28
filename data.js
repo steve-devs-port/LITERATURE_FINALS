@@ -1,7 +1,7 @@
 /* group members */
 const MEMBERS = [
-  { img: "assets/member-1.png", name: "Steve Nash Sampaga", roles: ["Project Leader", "Programmer", "Web Designer", "Graphic Designer"], work: "Led the project's development, coordinated its overall design and functionality, and worked on the website's interactive features and visual presentation." },
-  { img: "assets/member-2.png", name: "Steven James B. Silvosa", roles: ["Programmer", "Video/Audio Editor", "Literary Researcher "], work: "Contributed to the project's technical development, researched the literary and historical context of Dekada '70, and assisted with preparing multimedia materials for the demonstration." },
+  { img: "assets/member-1.png", name: "Steve Nash Sampaga", roles: ["Project Leader", "Frontend/Backend Programmer", "Web Designer", "Graphic Designer"], work: "Led the project's development, coordinated its overall design and functionality, and worked on the website's interactive features and visual presentation." },
+  { img: "assets/member-2.png", name: "Steven James B. Silvosa", roles: ["Backend Programmer", "Video/Audio Editor", "Literary Researcher "], work: "Contributed to the project's technical development, researched the literary and historical context of Dekada '70, and assisted with preparing multimedia materials for the demonstration." },
   { img: "assets/member-3.png", name: "Kenneth S. Orencia", roles: ["Presenter/Narrator", "Writer ", "Documentation Officer"], work: "Contributed to the project's written documentation and presentation materials, helped organize the narrative report, and prepared to explain the project's literary analysis and connection to misinformation." }
 ];
 
