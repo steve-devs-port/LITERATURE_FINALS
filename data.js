@@ -5,7 +5,7 @@ const MEMBERS = [
   { img: "assets/member-3.png", name: "Kenneth S. Orencia", roles: ["Presenter/Narrator", "Writer ", "Documentation Officer"], work: "Contributed to the project's written documentation and presentation materials, helped organize the narrative report, and prepared to explain the project's literary analysis and connection to misinformation." }
 ];
 
-/* source register (APA 7th edition), including works consulted for the project report. Use _text_ for italics. Only sources actually used by the site appear here. */
+/* source register, only sources actually used by the site appear here. */
 const SOURCES = [
   { id: "S1", group: "Literary text", apa: "Bautista, L. (2018). _Dekada '70_. Anvil Publishing.", url: "https://www.ortigasfoundationlibrary.com.ph/collections/library-holdings/dekada-70", use: "The novel analysed in the literary track (catalogue record, ISBN 978-971-27-3398-7). First published in Filipino in 1983." },
   { id: "S2", group: "Literary text", apa: "Interaksyon. (2022, January 28). _‘Dekada ’70’ Penguin edition? Lualhati Bautista gets offer to have novel published_. Philstar.com.", url: "https://interaksyon.philstar.com/hobbies-interests/2022/01/28/209433/lualhati-bautista-receives-offer-dekada-70-penguin/", use: "Press coverage of a publishing offer for the novel, noting its English translation and that the author was self-publishing it. Background reading." },
