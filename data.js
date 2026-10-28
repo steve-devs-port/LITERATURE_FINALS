@@ -26,7 +26,7 @@ const SOURCES = [
   { id: "S17", group: "Media and information literacy", apa: "Wardle, C., & Derakhshan, H. (2017). _Information disorder: Toward an interdisciplinary framework for research and policy making_. Council of Europe (Report DGI(2017)09).", url: "https://rm.coe.int/information-disorder-toward-an-interdisciplinary-framework-for-researc/168076277c", use: "Defines misinformation, disinformation and malinformation. Background reading." },
   { id: "S18", group: "Media and information literacy", apa: "Wineburg, S., & McGrew, S. (2017). _Lateral reading: Reading less and learning more when evaluating digital information_ (Working Paper No. 2017-A1). Stanford History Education Group.", url: "https://ssrn.com/abstract=3048994", use: "A study of how fact-checkers judge a source by checking other sources (lateral reading). Background reading." },
   { id: "S19", group: "Media and information literacy", apa: "Wilson, C., Grizzle, A., Tuazon, R., Akyempong, K., & Cheung, C.-K. (2011). _Media and information literacy curriculum for teachers_. UNESCO.", url: "https://unesdoc.unesco.org/ark:/48223/pf0000192971", use: "UNESCO's media and information literacy curriculum for teachers. Background reading." },
-  { id: "S20", group: "Project original", apa: "Group Red. (2026). _The Capital Courier_ [Fictional newspaper written for this project]. This website.", url: "", use: "Original classroom scenario. Not a historical document." }
+  { id: "S20", group: "Project original", apa: "Astartes Studios. (2026). _The Capital Courier_ [Fictional newspaper written for this project]. This website.", url: "", use: "Original classroom scenario. Not a historical document." }
 ];
 
 /* five threads */
